@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PORTFOLIO // AHMED HUZAIFA MALIK</title>
+<meta name="description" content="Ahmed Huzaifa Malik — Data Analyst & Data Scientist. Python, SQL, machine learning, dashboards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;900&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PALETTE — change all colours here
+   ============================================================ */
+:root{
+  --bg-deep:    #04173f;
+  --bg-mid:     #0a3aa0;
+  --bg-bright:  #1e78ff;
+  --ink:        #061024;
+  --paper:      #f4f7ff;
+  --accent:     #00e0ff;
+  --menu-hi:    #38b6ff;
+  --grid-dot:   rgba(255,255,255,.10);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--paper);
+  overflow:hidden;user-select:none}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:60;font-family:'Archivo Narrow';font-weight:700;
+  letter-spacing:.12em;font-size:13px;background:var(--ink);color:var(--paper);
+  padding:6px 12px;text-transform:uppercase}
+.hud.tl{top:16px;left:16px;transform:skewX(-8deg)}
+.hud.tr{top:16px;right:16px;transform:skewX(-8deg);background:var(--paper);color:var(--ink)}
+.hud.bl{bottom:14px;left:16px;background:transparent;padding:0;display:flex;gap:18px}
+.key{display:flex;align-items:center;gap:6px;font-size:12px}
+.key b{background:var(--paper);color:var(--ink);padding:2px 7px;transform:skewX(-8deg);
+  font-family:'Anton';font-weight:400;letter-spacing:.05em}
+
+.music{position:fixed;bottom:14px;right:16px;z-index:60;width:42px;height:42px;
+  background:var(--ink);border:none;color:var(--paper);cursor:pointer;
+  transform:skewX(-8deg);display:grid;place-items:center;font-size:18px}
+.music:hover{background:var(--accent);color:var(--ink)}
+.music.on{background:var(--accent);color:var(--ink)}
+
+/* ---------- screens + wipe ---------- */
+.screen{position:fixed;inset:0;z-index:10;opacity:0;visibility:hidden}
+.screen.active{opacity:1;visibility:visible;z-index:20}
+#wipe{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden;
+  visibility:hidden}
+#wipe.in,#wipe.out{visibility:visible}
+.wl{position:absolute;top:-12%;bottom:-12%;left:0;width:170%;
+  transform:skewX(-14deg) translateX(-175%);
+  transition:transform .46s cubic-bezier(.76,0,.24,1)}
+.w1{background:#f2efe6}
+.w2{background:var(--ink)}
+.w3{background:var(--bg-bright)}
+#wipe.in .wl{transform:skewX(-14deg) translateX(-18%)}
+#wipe.in .w2{transition-delay:.06s}
+#wipe.in .w3{transition-delay:.12s}
+#wipe.out .wl{transform:skewX(-14deg) translateX(175%)}
+#wipe.out .w1{transition-delay:.12s}
+#wipe.out .w2{transition-delay:.06s}
+
+
+/* ============ ENTRANCE ANIMATIONS ============
+   uses standalone `translate`/`scale` so it never fights transform:skewX() */
+@keyframes rise{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
+@keyframes slideL{from{opacity:0;translate:-34px 0}to{opacity:1;translate:0 0}}
+@keyframes snapIn{from{opacity:0;scale:1.7;translate:0 -14px}to{opacity:1;scale:1;translate:0 0}}
+@keyframes floatY{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@keyframes stripeShift{from{background-position:0 0}to{background-position:140px 0}}
+
+.screen.active .stag{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+.screen.active .stagL{animation:slideL .42s cubic-bezier(.2,.8,.2,1) both}
+.stag:nth-child(1),.stagL:nth-child(1){animation-delay:.02s}
+.d1{animation-delay:.06s!important}
+.d2{animation-delay:.12s!important}
+.d3{animation-delay:.18s!important}
+.d4{animation-delay:.24s!important}
+.d5{animation-delay:.30s!important}
+.d6{animation-delay:.36s!important}
+#menu button{animation:slideL .4s cubic-bezier(.2,.8,.2,1) both}
+#menu button:nth-child(1){animation-delay:.30s}
+#menu button:nth-child(2){animation-delay:.37s}
+#menu button:nth-child(3){animation-delay:.44s}
+#menu button:nth-child(4){animation-delay:.51s}
+#menu button:nth-child(5){animation-delay:.58s}
+.title .l{animation:snapIn .34s cubic-bezier(.3,1.5,.5,1) both}
+.exp,.card{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+.exp:nth-child(1),.card:nth-child(1){animation-delay:.14s}
+.exp:nth-child(2),.card:nth-child(2){animation-delay:.22s}
+.exp:nth-child(3),.card:nth-child(3){animation-delay:.30s}
+.exp:nth-child(4),.card:nth-child(4){animation-delay:.38s}
+.skill-group{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+.skill-group:nth-of-type(1){animation-delay:.14s}
+.skill-group:nth-of-type(2){animation-delay:.20s}
+.skill-group:nth-of-type(3){animation-delay:.26s}
+.skill-group:nth-of-type(4){animation-delay:.32s}
+.skill-group:nth-of-type(5){animation-delay:.38s}
+
+/* ---------- ART PANEL ----------
+   TO ADD YOUR IMAGE: put the file next to index.html and set
+   --art-img below to  url("yourfile.png")
+------------------------------------------------------------ */
+.art{position:absolute;top:0;right:0;width:46%;height:100%;
+  background:linear-gradient(135deg,var(--bg-bright),var(--bg-mid) 60%,var(--bg-deep));
+  clip-path:polygon(22% 0,100% 0,100% 100%,0 100%);overflow:hidden}
+.art-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+/* the panel crops to the middle ~46% of a 16:9 clip, so each character is
+   framed individually — otherwise faces sitting near a frame edge get cut */
+#experience .art-vid{object-position:0% 42%}   /* Mitsuru  - face far left  */
+#contact    .art-vid{object-position:0% 38%}   /* Yukari   - face left      */
+#projects   .art-vid{object-position:76% 34%}  /* Akihiko  - face right     */
+#home       .art-vid{object-position:62% 40%}  /* Makoto Yuki               */
+#skills     .art-vid{object-position:58% 40%}  /* Aigis                     */
+#about      .art-vid{object-position:46% 34%}  /* Kotone                    */
+
+/* keeps left-hand text readable over the moving art */
+.art::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,var(--bg-deep) 0%,rgba(4,23,63,.5) 13%,rgba(4,23,63,0) 40%)}
+.art::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:radial-gradient(var(--grid-dot) 1.5px,transparent 1.5px);
+  background-size:16px 16px;opacity:.35}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+#home .art{width:52%}
+.home-left{position:absolute;left:0;top:0;height:100%;width:56%;padding:52px 0 0 56px;
+  display:flex;flex-direction:column;justify-content:center}
+.eyebrow{font-family:'Archivo Narrow';font-weight:700;letter-spacing:.32em;font-size:11px;
+  background:var(--paper);color:var(--ink);align-self:flex-start;padding:5px 12px;
+  transform:skewX(-8deg);margin-bottom:14px;text-transform:uppercase}
+.title{font-family:'Anton';font-size:clamp(34px,4.2vw,58px);line-height:.95;
+  text-transform:uppercase;margin-bottom:14px}
+.title .l{display:inline-block;padding:0 2px}
+.title .box{background:var(--paper);color:var(--ink);padding:0 7px}
+.title .word{display:block}
+.role{font-family:'Archivo Narrow';font-weight:700;letter-spacing:.16em;font-size:13px;
+  color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+.bio{background:var(--ink);color:var(--paper);max-width:430px;padding:14px 18px;
+  font-size:13px;line-height:1.55;transform:skewX(-4deg);border-left:4px solid var(--accent)}
+.bio p{transform:skewX(4deg)}
+.menu{margin-top:18px;display:flex;flex-direction:column;gap:1px;align-items:flex-start}
+.menu button{font-family:'Anton';font-size:25px;background:none;border:none;
+  color:var(--paper);cursor:pointer;text-transform:uppercase;padding:2px 10px;
+  transform:skewX(-8deg);transition:transform .12s,background .12s,color .12s;position:relative}
+.menu button .t{display:inline-block;transform:skewX(8deg)}
+.menu button:hover,.menu button:focus-visible{background:var(--menu-hi);color:var(--ink);
+  transform:skewX(-8deg) translateX(10px);outline:none}
+.menu button::after{content:"◀";position:absolute;right:-32px;top:50%;
+  transform:translateY(-50%);color:var(--accent);opacity:0;font-size:18px;transition:opacity .12s}
+.menu button:hover::after,.menu button:focus-visible::after{opacity:1}
+
+/* ---------- inner page chrome ---------- */
+.page{position:absolute;inset:0;padding:60px 56px 64px;overflow-y:auto;overflow-x:hidden}
+.page-title{font-family:'Anton';font-size:clamp(38px,5.4vw,70px);text-transform:uppercase;
+  line-height:.9;margin-bottom:14px}
+.page-title .box{background:var(--paper);color:var(--ink);padding:0 10px}
+.esc{font-family:'Archivo Narrow';font-weight:700;letter-spacing:.1em;font-size:12px;
+  background:var(--ink);color:var(--paper);display:inline-block;padding:4px 10px;
+  transform:skewX(-8deg);margin-bottom:20px;cursor:pointer;border:none}
+.esc:hover{background:var(--accent);color:var(--ink)}
+.sub{font-size:13.5px;color:rgba(255,255,255,.68);margin:0 0 20px}
+
+
+/* animated diagonal stripes (Projects page background, as in reference) */
+#projects{background:
+  repeating-linear-gradient(115deg,transparent 0 46px,rgba(4,23,63,.30) 46px 60px),
+  linear-gradient(160deg,var(--bg-bright),#0d5fd8 55%,var(--bg-mid));
+  background-size:140px 100%,100% 100%;
+  animation:stripeShift 9s linear infinite}
+#projects .page-title .box{background:var(--ink);color:var(--paper)}
+#projects .proj-grid{max-width:720px}
+
+/* ---------- SKILLS ---------- */
+.skill-col{max-width:560px}
+.skill-group{margin-bottom:22px}
+.skill-group h3{font-family:'Archivo Narrow';font-weight:700;letter-spacing:.06em;
+  font-size:16px;background:var(--paper);color:var(--ink);display:inline-block;
+  padding:5px 14px;transform:skewX(-8deg);margin-bottom:10px;text-transform:uppercase}
+.bar-row{display:grid;grid-template-columns:150px 1fr 34px;align-items:center;gap:12px;
+  margin-bottom:6px;font-size:12.5px;font-weight:600}
+.bar-row .name{text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.bar{height:13px;background:rgba(255,255,255,.12);position:relative;overflow:hidden;
+  transform:skewX(-8deg)}
+.bar span{position:absolute;left:0;top:0;height:100%;width:0;
+  background:repeating-linear-gradient(90deg,var(--paper),var(--paper) 8px,var(--accent) 8px,var(--accent) 11px);
+  transition:width .7s cubic-bezier(.7,0,.3,1)}
+.val{font-family:'Anton';text-align:right;font-size:15px}
+
+
+/* ---------- PROJECT CARDS (reference-matched) ---------- */
+.row-label{display:flex;align-items:center;gap:10px;margin-top:2px;font-family:'Archivo Narrow';
+  font-weight:700;letter-spacing:.14em;font-size:15px;text-transform:uppercase;
+  margin:6px 0 12px}
+.row-label::before{content:"";width:26px;height:9px;background:var(--paper);
+  transform:skewX(-18deg);display:block}
+.row-note{font-family:'Archivo Narrow';font-weight:700;font-size:11px;letter-spacing:.1em;
+  color:rgba(255,255,255,.72);text-transform:uppercase;margin:-8px 0 12px}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;
+  max-width:900px;margin-bottom:26px}
+.card{position:relative;padding:15px 17px 14px;transform:skewX(-3deg);
+  transition:transform .16s,box-shadow .16s;display:flex;flex-direction:column;
+  min-height:132px;box-shadow:6px 7px 0 rgba(4,16,36,.42)}
+.card>*{transform:skewX(3deg)}
+.card:hover{transform:skewX(-3deg) translateY(-5px);box-shadow:9px 12px 0 rgba(4,16,36,.5)}
+.card.dark{background:var(--ink);color:var(--paper)}
+.card.lite{background:#f2efe6;color:var(--ink)}
+.card h4{font-family:'Anton';font-size:17px;text-transform:uppercase;line-height:1.1;
+  margin-bottom:6px;padding-right:8px}
+.card h4 em{font-style:normal;color:var(--bg-bright)}
+.card.dark h4 em{color:var(--accent)}
+.badge{position:absolute;top:-9px;right:10px;transform:skewX(-10deg);
+  background:var(--ink);color:var(--paper);font-family:'Archivo Narrow';font-weight:700;
+  font-size:9.5px;letter-spacing:.12em;padding:3px 9px;text-transform:uppercase;
+  display:flex;align-items:center;gap:5px;z-index:2}
+.card.lite .badge{background:#f2efe6;color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:block}
+.card p{font-size:12px;line-height:1.5;margin-bottom:10px;opacity:.86}
+.card .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;
+  gap:7px;flex-wrap:wrap}
+.card .links{display:flex;gap:7px;flex-wrap:wrap}
+.gh.alt{background:var(--accent);color:var(--ink)}
+.card.dark .gh.alt{background:var(--bg-bright);color:#fff}
+.card .stat{font-family:'Archivo Narrow';font-weight:700;font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;opacity:.8}
+.gh{font-family:'Archivo Narrow';font-weight:700;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;text-decoration:none;padding:5px 10px;transform:skewX(-10deg);
+  background:var(--paper);color:var(--ink);white-space:nowrap}
+.card.lite .gh{background:var(--bg-bright);color:#fff}
+.gh:hover{background:var(--accent);color:var(--ink)}
+.gh span{display:inline-block;transform:skewX(10deg)}
+
+/* ---------- EXPERIENCE ---------- */
+.exp-list{max-width:760px}
+.exp{background:var(--ink);border-left:4px solid var(--accent);padding:15px 20px;
+  margin-bottom:12px;transform:skewX(-3deg)}
+.exp>*{transform:skewX(3deg)}
+.exp .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:3px}
+.exp h4{font-family:'Anton';font-size:18px;text-transform:uppercase;line-height:1.1}
+.exp .when{font-family:'Archivo Narrow';font-weight:700;font-size:11px;letter-spacing:.07em;
+  color:var(--accent);white-space:nowrap;text-transform:uppercase}
+.exp .role-line{font-family:'Archivo Narrow';font-weight:700;font-size:12px;letter-spacing:.06em;
+  color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:8px}
+.exp ul{list-style:none;font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.84)}
+.exp li{margin-bottom:4px;padding-left:12px;position:relative}
+.exp li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+
+/* ---------- ABOUT ---------- */
+.about-wrap{max-width:700px;font-size:14.5px;line-height:1.68}
+.about-wrap p{margin-bottom:13px}
+.chip{background:var(--paper);color:var(--ink);padding:1px 7px;font-weight:700;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.quote{background:var(--ink);border-left:4px solid var(--accent);padding:16px 20px;
+  transform:skewX(-3deg);margin:18px 0;max-width:540px}
+.quote *{transform:skewX(3deg)}
+.quote b{display:block;font-family:'Anton';font-size:18px;margin-bottom:5px;line-height:1.18}
+.quote small{font-family:'Archivo Narrow';font-weight:700;letter-spacing:.06em;color:var(--accent)}
+.edu{background:rgba(255,255,255,.07);padding:14px 18px;transform:skewX(-3deg);
+  max-width:560px;margin-top:16px}
+.edu *{transform:skewX(3deg)}
+.edu h5{font-family:'Anton';font-size:16px;text-transform:uppercase;margin-bottom:4px}
+.edu p{font-size:13px;margin:0;color:rgba(255,255,255,.8)}
+.cv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) skewX(-8deg);
+  background:var(--bg-bright);color:var(--paper);border:none;font-family:'Archivo Narrow';
+  font-weight:700;letter-spacing:.14em;font-size:13px;padding:11px 24px;cursor:pointer;
+  text-transform:uppercase;z-index:40;text-decoration:none;display:none}
+.cv.show{display:block}
+.cv:hover{background:var(--accent);color:var(--ink)}
+
+/* ---------- CONTACT ---------- */
+.contact-list{display:flex;flex-direction:column;gap:12px;max-width:560px;margin-top:6px}
+.contact-list a{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:14px;
+  background:var(--ink);padding:14px 20px;transform:skewX(-4deg);text-decoration:none;
+  color:var(--paper);transition:background .12s,color .12s}
+.contact-list a>*{transform:skewX(4deg)}
+.contact-list a:hover{background:var(--menu-hi);color:var(--ink)}
+.contact-list .k{font-family:'Anton';font-size:17px;letter-spacing:.05em;text-transform:uppercase}
+.contact-list .v{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  body{overflow-y:auto}
+  .art{display:none}
+  .home-left{position:static;width:100%;padding:76px 22px 40px}
+  .page{padding:66px 22px 90px}
+  .hud.tr{display:none}
+  .hud.bl{display:none}
+  .bar-row{grid-template-columns:110px 1fr 30px}
+  .screen{position:relative;inset:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="hud tl">PORTFOLIO // AHMED HUZAIFA MALIK</div>
+<div class="hud tr">MANSEHRA · DATA SCIENCE</div>
+<div class="hud bl">
+  <span class="key"><b>↑↓</b>SELECT</span>
+  <span class="key"><b>ENTER</b>CONFIRM</span>
+  <span class="key"><b>ESC</b>BACK</span>
+</div>
+<button class="music" id="musicBtn" title="Toggle music">♪</button>
+<audio id="bgm" loop preload="none"><source src="art/theme.mp3" type="audio/mpeg"></audio>
+
+<div id="wipe"><i class="wl w1"></i><i class="wl w2"></i><i class="wl w3"></i></div>
+
+<!-- ============ HOME ============ -->
+<section class="screen active" id="home">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/yuki.jpg" data-src="art/yuki.mp4"></video>
+  </div>
+  <div class="home-left">
+    <span class="eyebrow stag">Take a look at my work</span>
+    <h1 class="title" id="nameTitle"></h1>
+    <div class="role stag d3">Data Analyst · Data Scientist</div>
+    <div class="bio stag d4"><p>Data Science undergraduate at Pak-Austria Fachhochschule with a strong
+      foundation in data analysis, machine learning, and statistical modelling. I work in Python,
+      SQL and Power BI, and I've shipped projects end-to-end — from a containerised fraud
+      detection API running on a live cloud endpoint to churn models and business dashboards
+      built for non-technical stakeholders.</p></div>
+    <nav class="menu" id="menu">
+      <button data-go="projects"><span class="t">Projects</span></button>
+      <button data-go="experience"><span class="t">Experience</span></button>
+      <button data-go="skills"><span class="t">Skills</span></button>
+      <button data-go="about"><span class="t">About</span></button>
+      <button data-go="contact"><span class="t">Contact</span></button>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="screen" id="projects">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/akihiko.jpg" data-src="art/akihiko.mp4"></video>
+  </div>
+  <div class="page">
+    <button class="esc stag" data-back>◀ ESC · BACK</button>
+    <h1 class="page-title stag d1"><span class="box">PROJ</span>ECTS</h1>
+
+    <div class="stag d2">
+      <div class="row-label">Featured</div>
+    </div>
+    <div class="proj-grid">
+
+      <div class="card dark">
+        <div class="badge"><i></i>Live API</div>
+        <h4><em>Fraud Detection</em> System</h4>
+        <p>IEEE-CIS, 590k+ transactions at a 3.5% fraud rate. LightGBM with class-weighting,
+           PR-AUC 0.548 vs a 0.186 baseline. Time-based split to stop temporal leakage, then
+           shipped as a Dockerised FastAPI service on a live cloud endpoint.</p>
+        <div class="foot"><span class="stat">LightGBM · FastAPI · Docker</span>
+          <span class="links">
+            <a class="gh" href="https://github.com/real-huzaifa/Fraud-Detection-Api" target="_blank" rel="noopener"><span>API repo →</span></a>
+            <a class="gh alt" href="https://github.com/real-huzaifa/fraud-detection-demo" target="_blank" rel="noopener"><span>Live demo →</span></a>
+          </span></div>
+      </div>
+
+      <div class="card dark">
+        <div class="badge"><i></i>Dashboard</div>
+        <h4><em>Customer Churn</em> Prediction</h4>
+        <p>Telco dataset, 7,000+ customers. Compared Logistic Regression, Random Forest and
+           XGBoost; picked LR on recall 0.78 / ROC-AUC 0.84. Streamlit dashboard with live
+           scoring and Low/Medium/High risk segmentation.</p>
+        <div class="foot"><span class="stat">Scikit-learn · Streamlit</span>
+          <span class="links">
+            <a class="gh" href="https://github.com/real-huzaifa/Data-Analytics/tree/main/Customer-Churn-Prediction-Dashboard" target="_blank" rel="noopener"><span>View on GitHub →</span></a>
+          </span></div>
+      </div>
+
+      <div class="card dark">
+        <div class="badge"><i></i>Analytics</div>
+        <h4><em>E-Commerce</em> Business Analytics</h4>
+        <p>10,000+ orders across multiple tables. SQL aggregation, a Chi-Square test on return
+           rates (p &lt; 0.001), and a six-question Power BI dashboard delivered with a written
+           report for non-technical stakeholders.</p>
+        <div class="foot"><span class="stat">SQL · Power BI · Statistics</span>
+          <span class="links">
+            <a class="gh" href="https://github.com/real-huzaifa/E-Commerce-Business-Analytics-Project" target="_blank" rel="noopener"><span>View on GitHub →</span></a>
+          </span></div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section class="screen" id="experience">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/mitsuru.jpg" data-src="art/mitsuru.mp4"></video>
+  </div>
+  <div class="page">
+    <button class="esc stag" data-back>◀ ESC · BACK</button>
+    <h1 class="page-title stag d1"><span class="box">EXPE</span>RIENCE</h1>
+    <p class="sub stag d2">Internships and applied work.</p>
+    <div class="exp-list">
+
+      <div class="exp">
+        <div class="top"><h4>Teyzix Core</h4><span class="when">Jun 2026 – Jul 2026</span></div>
+        <div class="role-line">Data Analytics Intern · Lahore</div>
+        <ul>
+          <li>Built a customer churn prediction model and deployed it as an interactive Streamlit dashboard for live risk scoring.</li>
+          <li>Ran a full analytics project: built a realistic business dataset, cleaned and transformed it, explored it, and presented findings in an interactive dashboard.</li>
+          <li>Completed retail sales and public transport analytics projects, delivering Power BI dashboards and written reports for non-technical stakeholders.</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="top"><h4>Qwetrum Technologies</h4><span class="when">Jun 2026 – Jul 2026</span></div>
+        <div class="role-line">Data Analysis Intern · Lahore</div>
+        <ul>
+          <li>Contributed to assigned technical projects in the June 2026 remote cohort under professional mentorship.</li>
+          <li>Applied data cleaning, exploratory analysis and visualisation to real-world project datasets.</li>
+          <li>Delivered projects covering SQL querying, A/B testing, EDA and machine learning workflows.</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="top"><h4>Digital Empowerment Network</h4><span class="when">Jul 2025 – Sep 2025</span></div>
+        <div class="role-line">Data Science Intern · Islamabad</div>
+        <ul>
+          <li>Executed data collection, cleaning and preprocessing workflows to prepare datasets for analysis.</li>
+          <li>Produced visualisations to identify trends and patterns in complex datasets.</li>
+          <li>Performed model training and tuning to improve algorithm performance.</li>
+        </ul>
+      </div>
+
+      <div class="exp">
+        <div class="top"><h4>DevelopersHub Corporation</h4><span class="when">Apr 2025 – Jun 2025</span></div>
+        <div class="role-line">Data Science Intern · Islamabad</div>
+        <ul>
+          <li>Managed end-to-end data pipelines including collection, cleaning and preprocessing.</li>
+          <li>Developed visualisations to communicate insights effectively.</li>
+          <li>Assisted in model training and tuning to refine predictive performance.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section class="screen" id="skills">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/aigis.jpg" data-src="art/aigis.mp4"></video>
+  </div>
+  <div class="page">
+    <div class="skill-col">
+      <button class="esc stag" data-back>◀ ESC · BACK</button>
+      <h1 class="page-title stag d1"><span class="box">SK</span>ILLS</h1>
+      <p class="sub stag d2">Here are my skill ratings.</p>
+
+      <div class="skill-group">
+        <h3>Languages &amp; Analysis</h3>
+        <div class="bar-row"><span class="name">Python</span><div class="bar"><span data-v="88"></span></div><span class="val">88</span></div>
+        <div class="bar-row"><span class="name">SQL</span><div class="bar"><span data-v="82"></span></div><span class="val">82</span></div>
+        <div class="bar-row"><span class="name">Pandas · NumPy</span><div class="bar"><span data-v="86"></span></div><span class="val">86</span></div>
+        <div class="bar-row"><span class="name">Statistics</span><div class="bar"><span data-v="78"></span></div><span class="val">78</span></div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Machine Learning</h3>
+        <div class="bar-row"><span class="name">Scikit-learn</span><div class="bar"><span data-v="85"></span></div><span class="val">85</span></div>
+        <div class="bar-row"><span class="name">LightGBM · XGBoost</span><div class="bar"><span data-v="80"></span></div><span class="val">80</span></div>
+        <div class="bar-row"><span class="name">Model Evaluation</span><div class="bar"><span data-v="82"></span></div><span class="val">82</span></div>
+        <div class="bar-row"><span class="name">Preprocessing</span><div class="bar"><span data-v="87"></span></div><span class="val">87</span></div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Visualisation &amp; BI</h3>
+        <div class="bar-row"><span class="name">Power BI</span><div class="bar"><span data-v="84"></span></div><span class="val">84</span></div>
+        <div class="bar-row"><span class="name">Matplotlib · Seaborn</span><div class="bar"><span data-v="83"></span></div><span class="val">83</span></div>
+        <div class="bar-row"><span class="name">Streamlit</span><div class="bar"><span data-v="78"></span></div><span class="val">78</span></div>
+        <div class="bar-row"><span class="name">Microsoft Excel</span><div class="bar"><span data-v="80"></span></div><span class="val">80</span></div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Deployment &amp; Tools</h3>
+        <div class="bar-row"><span class="name">Git &amp; GitHub</span><div class="bar"><span data-v="80"></span></div><span class="val">80</span></div>
+        <div class="bar-row"><span class="name">FastAPI</span><div class="bar"><span data-v="76"></span></div><span class="val">76</span></div>
+        <div class="bar-row"><span class="name">Docker</span><div class="bar"><span data-v="72"></span></div><span class="val">72</span></div>
+        <div class="bar-row"><span class="name">VS Code · Colab</span><div class="bar"><span data-v="88"></span></div><span class="val">88</span></div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Languages Spoken</h3>
+        <div class="bar-row"><span class="name">Urdu</span><div class="bar"><span data-v="100"></span></div><span class="val">100</span></div>
+        <div class="bar-row"><span class="name">English (B2)</span><div class="bar"><span data-v="80"></span></div><span class="val">80</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="screen" id="about">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/kotone.jpg" data-src="art/kotone.mp4"></video>
+  </div>
+  <div class="page">
+    <button class="esc stag" data-back>◀ ESC · BACK</button>
+    <h1 class="page-title stag d1"><span class="box">ABO</span>UT</h1>
+    <div style="height:10px"></div>
+    <div class="about-wrap stag d2">
+      <p>I'm a Data Science undergraduate at Pak-Austria Fachhochschule, working mainly in
+        <span class="chip">Python</span>, <span class="chip">SQL</span> and
+        <span class="chip">Power BI</span>. Most of my time goes into
+        <span class="chip">data preprocessing</span>,
+        <span class="chip">visualisation</span> and
+        <span class="chip">model training</span> — turning messy datasets into something a
+        decision-maker can actually act on.</p>
+
+      <p>What I care about is finishing things. A model in a notebook isn't a result; a model
+        behind a live API is. That's why my fraud detection project ended in a
+        <span class="chip">containerised FastAPI service</span> on a public cloud endpoint rather
+        than a set of validation scores. I also pay attention to
+        <span class="chip">choosing the right metric</span> — PR-AUC over accuracy on a 3.5%
+        positive rate, recall over precision when the cost is a missed at-risk customer.</p>
+
+      <div class="quote">
+        <b>"A model in a notebook isn't a result. A model in production is."</b>
+        <small>— How I pick what to work on</small>
+      </div>
+
+      <p>Across four internships I've worked on churn prediction, retail and transport analytics,
+        A/B testing and SQL reporting, and I've built dashboards and written reports aimed
+        squarely at <span class="chip">non-technical stakeholders</span>. Right now I'm deepening
+        my work in <span class="chip">machine learning</span> and
+        <span class="chip">deployment</span>, and I'm looking to contribute on a team where I can
+        keep shipping.</p>
+
+      <div class="edu">
+        <h5>Education</h5>
+        <p><b>BS Data Science</b> · Pak-Austria Fachhochschule Institute of Applied Sciences and
+          Technology, Haripur · 2023 – Present</p>
+        <p style="margin-top:6px">Certifications: DataCamp (Data Analyst in Python, Power BI &amp;
+          Tableau, SQL Fundamentals, Data Literacy) · Meta (Introduction to Data Analytics,
+          Python Data Analytics)</p>
+      </div>
+    </div>
+  </div>
+</section>
+<a class="cv" id="cvBtn" href="Ahmed_Huzaifa_Malik_CV.pdf" download>↓ Download my CV (PDF)</a>
+
+<!-- ============ CONTACT ============ -->
+<section class="screen" id="contact">
+  <div class="art">
+    <video class="art-vid" muted loop playsinline preload="none" poster="art/yukari.jpg" data-src="art/yukari.mp4"></video>
+  </div>
+  <div class="page">
+    <button class="esc stag" data-back>◀ ESC · BACK</button>
+    <h1 class="page-title stag d1"><span class="box">CON</span>TACT</h1>
+    <p class="sub stag d2">Open to internships and junior data roles.</p>
+    <div class="contact-list">
+      <a href="mailto:ahmedhuzaifamalik@gmail.com"><span class="k">Email</span><span class="v">ahmedhuzaifamalik@gmail.com</span></a>
+      <a href="tel:+923175569176"><span class="k">Phone</span><span class="v">+92 317 5569176</span></a>
+      <a href="https://github.com/real-huzaifa" target="_blank" rel="noopener"><span class="k">GitHub</span><span class="v">github.com/real-huzaifa</span></a>
+      <a href="https://www.linkedin.com/in/ahmed-huzaifa-malik/" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span class="v">linkedin.com/in/ahmed-huzaifa-malik</span></a>
+      <a href="#"><span class="k">Location</span><span class="v">Mansehra, Pakistan</span></a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ---- jagged P5 title ---- */
+(function(){
+  const NAME = "AHMED HUZAIFA MALIK";
+  const el = document.getElementById('nameTitle');
+  NAME.split(" ").forEach(w=>{
+    const wrap=document.createElement('span'); wrap.className='word';
+    [...w].forEach(ch=>{
+      const s=document.createElement('span'); s.className='l'; s.textContent=ch;
+      if(Math.random()<0.34) s.classList.add('box');
+      s.style.transform=`rotate(${(Math.random()*10-5).toFixed(1)}deg)`;
+      wrap.appendChild(s);
+    });
+    el.appendChild(wrap);
+  });
+})();
+
+/* ---- navigation ---- */
+const wipe=document.getElementById('wipe'), cvBtn=document.getElementById('cvBtn');
+let animating=false;
+function show(id){
+  if(animating) return;
+  const cur=document.querySelector('.screen.active'), next=document.getElementById(id);
+  if(!next||next===cur) return;
+  animating=true;
+  wipe.classList.add('in');
+  setTimeout(()=>{
+    cur.classList.remove('active'); next.classList.add('active');
+    cvBtn.classList.toggle('show', id==='about');
+    restartAnims(next); playActive();
+    if(id==='skills') fillBars();
+    next.querySelector('.page')?.scrollTo(0,0);
+    wipe.classList.remove('in'); wipe.classList.add('out');
+    setTimeout(()=>{
+      wipe.classList.remove('out','in'); animating=false;
+      next.querySelector('[data-back],button')?.focus();
+    },470);
+  },470);
+}
+
+/* force entrance animations to replay each time a section is opened */
+function restartAnims(sec){
+  sec.querySelectorAll('.stag,.stagL,.card,.exp,.skill-group,#menu button,.title .l')
+     .forEach(el=>{ el.style.animation='none'; void el.offsetWidth; el.style.animation=''; });
+}
+function fillBars(){
+  document.querySelectorAll('#skills .bar span').forEach((s,i)=>{
+    s.style.width='0';
+    s.style.transitionDelay=(0.18+i*0.045).toFixed(2)+'s';
+    requestAnimationFrame(()=>{s.style.width=s.dataset.v+'%';});
+  });
+}
+document.querySelectorAll('#menu button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
+document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>show('home')));
+
+/* ---- keyboard ---- */
+let mi=0; const menuBtns=[...document.querySelectorAll('#menu button')];
+document.addEventListener('keydown',e=>{
+  const onHome=document.getElementById('home').classList.contains('active');
+  if(e.key==='Escape'){ if(!onHome) show('home'); return; }
+  if(!onHome) return;
+  if(e.key==='ArrowDown'){mi=(mi+1)%menuBtns.length;menuBtns[mi].focus();e.preventDefault();}
+  if(e.key==='ArrowUp'){mi=(mi-1+menuBtns.length)%menuBtns.length;menuBtns[mi].focus();e.preventDefault();}
+  if(e.key==='Enter'&&document.activeElement.dataset.go) show(document.activeElement.dataset.go);
+});
+
+
+/* ---- background video: desktop only, play just the active section ---- */
+const WIDE = window.matchMedia('(min-width: 901px)');
+function initVideos(){
+  if(!WIDE.matches) return;
+  document.querySelectorAll('.art-vid').forEach(v=>{
+    if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.load(); }
+  });
+  playActive();
+}
+function playActive(){
+  if(!WIDE.matches) return;
+  document.querySelectorAll('.art-vid').forEach(v=>{
+    const on = v.closest('.screen')?.classList.contains('active');
+    if(on){ v.play().catch(()=>{}); } else { v.pause(); }
+  });
+}
+WIDE.addEventListener('change',initVideos);
+initVideos();
+
+/* ---- background music ---- */
+const bgm=document.getElementById('bgm'), mbtn=document.getElementById('musicBtn');
+bgm.volume=0.35;
+let playing=false;
+function setMusic(on){
+  playing=on;
+  mbtn.textContent = on ? '\u266b' : '\u266a';
+  mbtn.classList.toggle('on', on);
+  mbtn.setAttribute('aria-label', on ? 'Pause music' : 'Play music');
+}
+mbtn.addEventListener('click',()=>{
+  if(playing){ bgm.pause(); setMusic(false); }
+  else{
+    bgm.play().then(()=>setMusic(true))
+      .catch(()=>{ setMusic(false); mbtn.title='Playback blocked - click again'; });
+  }
+});
+bgm.addEventListener('ended',()=>setMusic(false));
+setMusic(false);
+</script>
+</body>
+</html>
