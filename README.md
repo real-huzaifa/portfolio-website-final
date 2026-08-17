@@ -1,136 +1,163 @@
-# Persona-Styled Developer Portfolio
+# Personal Portfolio Website
 
-A single-page personal portfolio built as a game-style menu, inspired by the UI design
-language of the *Persona* series — jagged cut-out typography, skewed panels, diagonal
-scene transitions and animated live-wallpaper backgrounds.
+---
 
-Built by **Ahmed Huzaifa Malik** — Data Analyst / Data Scientist.
+**Live site:** _add your URL here_
+ 
+---
+ 
+## Overview
+ 
+Most developer portfolios are a scrolling page of cards. I wanted mine to be something a
+person actually remembers, so I built it as a **game menu** instead — the whole site behaves
+like a console UI, driven by keyboard or mouse, with each section arriving behind an
+animated scene transition.
+ 
+The visual language is drawn from the *Persona* series: hard diagonal cuts, letters knocked
+out into white boxes at irregular angles, and heavy skewed panels. Reproducing that in the
+browser meant solving a set of problems that a normal portfolio never runs into — which is
+most of what this project is really about.
+ 
+Everything is hand-written HTML, CSS and vanilla JavaScript. No framework, no build step,
+no dependencies, no package manager. The entire site is one `index.html` file plus media.
 
-**Live site:** _add your Vercel URL here after deploying_
+---
+
+## What I built
+ 
+**Procedural title typography.** The name on the landing page isn't an image or hand-marked
+spans — a script splits the string per character, randomly boxes roughly a third of the
+letters and applies a random rotation within ±5°. Every page load produces a different
+arrangement, so the effect is generated rather than authored.
+ 
+**Three-layer scene transition.** Section changes fire three skewed panels — cream, black,
+then blue — sweeping across the viewport on a 60ms stagger, with the page swap hidden at
+peak coverage. Getting the panels to fully clear afterwards took some debugging; an
+incompletely reset clip state left a panel parked over the left of the screen, silently
+clipping page content.
+ 
+**Staggered entrance choreography.** Every section replays its own entrance on each visit:
+title letters snap in with an overshoot easing, menu items slide in sequentially, cards
+rise on a delay chain, and skill bars fill one after another rather than all at once.
+Animations are driven through the standalone `translate` and `scale` properties instead of
+`transform`, so they compose with the layout's existing `skewX()` rather than overwriting it.
+ 
+**Per-section live video backgrounds.** Each section carries its own animated wallpaper
+behind a diagonally clipped panel. Because the panel is portrait and the source clips are
+16:9, `object-fit: cover` only exposes the middle ~46% of each frame — enough to crop a
+character's face straight out of view. Each video is therefore framed individually with
+`object-position`, tuned against the actual subject placement in that clip.
+ 
+**Media pipeline.** Source wallpapers arrived at roughly 26MB each (1080p60 with audio) and
+the music track at 11MB. Everything was re-encoded through `ffmpeg` — video to 720p30 with
+audio stripped, audio to 96kbps — taking total media weight from about 160MB to under 10MB
+with no visible quality loss on flat cel-shaded artwork.
+ 
+**Deliberate loading strategy.** Video sources are held in `data-src` and only assigned by
+script above a 900px viewport, so mobile visitors never download them at all. Only the
+active section's video plays; the rest stay paused. Poster frames render instantly while
+video streams in behind them.
+ 
+**Accessibility.** Full keyboard navigation (`↑` `↓` `Enter` `Esc`), managed focus across
+section changes, visible focus states, and `prefers-reduced-motion` support that disables
+every animation for users who ask for it.
 
 ---
 
 ## Features
+ 
+- Game-menu navigation — mouse or keyboard
+- Six sections: Home, Projects, Experience, Skills, About, Contact
+- Animated diagonal scene transitions
+- Live video wallpaper per section, with poster-frame fallbacks
+- Background music with a toggle control
+- Animated skill meters
+- Responsive down to mobile, collapsing to a stacked layout
+- Zero dependencies — opens straight from the filesystem
 
-- **Game-menu navigation** — five sections driven by mouse or keyboard (`↑` `↓` `Enter` `Esc`)
-- **Three-layer diagonal wipe** between sections — cream, black and blue panels sweeping on
-  a stagger, mimicking the reference UI
-- **Staggered entrance animations** — title letters snap in, menu items slide in one by one,
-  skill bars fill in sequence
-- **Live video wallpapers** — a different animated background per section, desktop only
-- **Background music** with a toggle control
-- **Fully responsive** — collapses to a stacked single-column layout on mobile
-- **Accessible** — visible keyboard focus, `prefers-reduced-motion` support, semantic markup
+---
 
-## Tech
-
-Plain **HTML**, **CSS** and **vanilla JavaScript**. No framework, no build step, no
-dependencies, no package manager. The entire site is one `index.html` file plus media assets.
-
-Fonts are Anton and Archivo, loaded from Google Fonts.
+## Tools & Technologies
+ 
+**Languages**
+| | |
+|---|---|
+| HTML5 | semantic structure, `<video>` and `<audio>` media elements |
+| CSS3 | `clip-path`, `object-fit` / `object-position`, keyframe animation, custom properties, grid, flexbox, media queries |
+| JavaScript (ES6) | DOM manipulation, state handling, conditional media loading, keyboard events |
+ 
+**Media processing**
+| | |
+|---|---|
+| FFmpeg | video re-encoding (H.264, 720p30), audio transcoding, poster-frame extraction |
+ 
+**Typography**
+| | |
+|---|---|
+| Anton | display face — titles and menu |
+| Archivo / Archivo Narrow | body and UI text |
+ 
+**Tooling**
+| | |
+|---|---|
+| VS Code | development |
+| Git & GitHub | version control |
+| Vercel | hosting |
+ 
+---
 
 ## Structure
-
+ 
 ```
 .
-├── index.html                    entire site (markup, styles, scripts)
+├── index.html                    entire site — markup, styles and scripts
 ├── README.md
+├── .gitignore
 ├── Ahmed_Huzaifa_Malik_CV.pdf    linked from the About section
 └── art/
     ├── *.mp4                     section background wallpapers
     ├── *.jpg                     poster frames
     └── theme.mp3                 background music
 ```
+ 
+Paths are relative — `index.html` and `art/` need to stay together.
 
-Paths are relative — keep `index.html` and `art/` together.
+---
 
 ## Running locally
-
-Open `index.html` directly in a browser, or serve the folder:
-
+ 
+Open `index.html` in a browser, or serve the folder:
+ 
 ```bash
 python -m http.server 8000
 ```
+ 
+> The window must be wider than **900px** for the artwork panel to appear. Below that it is
+> hidden by design and the videos are never requested.
+ 
+---
 
-Then visit <http://localhost:8000>.
+## Author
+ 
+**Ahmed Huzaifa Malik** — Data Analyst / Data Scientist
+BS Data Science, Pak-Austria Fachhochschule Institute of Applied Sciences and Technology
+ 
+[LinkedIn](https://www.linkedin.com/in/ahmed-huzaifa-malik/) · [GitHub](https://github.com/real-huzaifa) · ahmedhuzaifamalik@gmail.com
 
-> The browser window must be **wider than 900px** for the artwork panel to appear.
-> Below that it is hidden by design and the videos are never downloaded.
-
-## Deploying
-
-The site is fully static, so any static host works.
-
-**Vercel**
-
-1. Push this repo to GitHub
-2. Import it at [vercel.com/new](https://vercel.com/new)
-3. Framework preset: **Other** — leave build command and output directory empty
-4. Deploy
-
-No `vercel.json` or configuration is required.
-
-## Performance notes
-
-Source wallpapers were roughly 26 MB each at 1080p60. They were re-encoded to 720p30 with
-audio stripped, bringing the total media payload from ~160 MB to under 10 MB.
-
-| Technique | Effect |
-|---|---|
-| `preload="none"` + JS-assigned `src` | mobile visitors never download the videos |
-| Width-gated loading (`min-width: 901px`) | artwork skipped entirely on small screens |
-| Only the active section's video plays | avoids six simultaneous decode loops |
-| Poster frames (~20 KB each) | panel renders instantly while video streams |
-| `prefers-reduced-motion` | disables all animation for users who ask for it |
-
-To show wallpapers on tablets, lower the `901px` threshold in the `WIDE` media query near
-the bottom of the script.
-
-## Customising
-
-| What | Where in `index.html` |
-|---|---|
-| Colour palette | `:root` block — six hex values |
-| Name in the title | `const NAME` at the top of the script |
-| Intro bio | `.bio` in the `home` section |
-| Projects | the `.card` blocks in the `projects` section |
-| Experience | the `.exp` blocks |
-| Skill ratings | `data-v="88"` plus the matching `<span class="val">` |
-| Contact details | `.contact-list` |
-
-### Section → background mapping
-
-| Section | Background |
-|---|---|
-| Home | `art/yuki.mp4` |
-| Projects | `art/akihiko.mp4` |
-| Experience | `art/mitsuru.mp4` |
-| Skills | `art/aigis.mp4` |
-| About | `art/kotone.mp4` |
-| Contact | `art/yukari.mp4` |
-
-To swap one, drop a new `.mp4` into `art/`, update that section's `data-src`, and generate
-a poster frame:
-
-```bash
-ffmpeg -ss 1 -i art/new.mp4 -frames:v 1 -vf "scale=640:-2" -q:v 6 art/new.jpg
-```
-
-Each video is framed individually via `object-position`, because the panel only shows the
-middle ~46% of a 16:9 clip and a character whose face sits near a frame edge would
-otherwise be cropped out. Adjust the matching rule in the stylesheet if a face sits wrong.
+---
 
 ## Credits
-
-- UI design language inspired by **Persona 5** / **Persona 3 Reload** (ATLUS)
+ 
+- UI design language inspired by **Persona 5** and **Persona 3 Reload** (ATLUS)
 - Background wallpapers: **Persona 3 Reload** artwork, © ATLUS / SEGA
 - Background music: *Full Moon Full Life*, © ATLUS / SEGA
+> **Note on assets.** The artwork and music bundled here are copyrighted by ATLUS and are
+> included for personal, non-commercial use only. If you fork this project, replace them
+> with media you own or have licensed before publishing.
 
-> **Note on assets.** The artwork and music in this repository are copyrighted by ATLUS and
-> are included here for personal, non-commercial use only. If you fork this project, replace
-> them with media you own or have licensed before publishing.
+---
 
 ## Licence
-
-The code in this repository is free to use and adapt. The bundled media assets are **not** —
-see Credits above.
+ 
+The code in this repository is free to use and adapt. The bundled media assets are not —
+see Credits.
