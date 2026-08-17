@@ -289,18 +289,19 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
   body{overflow-y:auto}
   .art{display:none}
   .home-left{position:static;width:100%;padding:76px 22px 40px}
-  .page{padding:66px 22px 90px}
+  .page{position:static;padding:66px 22px 90px}
   .hud.tr{display:none}
   .hud.bl{display:none}
   .bar-row{grid-template-columns:110px 1fr 30px}
-  .screen{position:relative;inset:auto}
+  .screen{position:relative;inset:auto;display:none}
+  .screen.active{display:block}
 }
 </style>
 </head>
 <body>
 
 <div class="hud tl">PORTFOLIO // AHMED HUZAIFA MALIK</div>
-<div class="hud tr">DATA ANALYTICS · DATA SCIENCE · MACHINE LEARNING</div>
+<div class="hud tr">MANSEHRA · DATA SCIENCE</div>
 <div class="hud bl">
   <span class="key"><b>↑↓</b>SELECT</span>
   <span class="key"><b>ENTER</b>CONFIRM</span>
@@ -455,7 +456,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
     <div class="skill-col">
       <button class="esc stag" data-back>◀ ESC · BACK</button>
       <h1 class="page-title stag d1"><span class="box">SK</span>ILLS</h1>
-      <p class="sub stag d2">Here are my skill ratings.</p>
+      <p class="sub stag d2">Ratings are my own estimate — edit the numbers in the HTML.</p>
 
       <div class="skill-group">
         <h3>Languages &amp; Analysis</h3>
