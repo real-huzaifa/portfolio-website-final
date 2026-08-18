@@ -287,7 +287,25 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 /* ---------- responsive ---------- */
 @media (max-width:900px){
   body{overflow-y:auto}
-  .art{display:none}
+  /* on phones the diagonal panel makes no sense, so the wallpaper becomes a
+     full-screen fixed backdrop with a scrim over it to keep text readable */
+  .art,#home .art{display:block;position:fixed;inset:0;width:100vw;height:100vh;
+       clip-path:none;z-index:0}
+  .art::after{background:linear-gradient(180deg,rgba(4,23,63,.62) 0%,rgba(4,23,63,.78) 55%,rgba(4,23,63,.88) 100%)}
+  .art::before{opacity:.22}
+  .home-left,.page{position:relative;z-index:1}
+
+  /* A phone crops far harder than the desktop panel: covering by height means
+     only ~26% of a 16:9 clip's width is visible, versus ~46% on desktop. These
+     values re-centre each character's face inside that narrower window.
+     position% = (face% - 13) / 0.74                                          */
+  #home       .art-vid{object-position:85% 30%}  /* Makoto Yuki - face at 76% */
+  #projects   .art-vid{object-position:80% 30%}  /* Akihiko     - face at 72% */
+  #experience .art-vid{object-position:6%  31%}  /* Mitsuru     - face at 17% */
+  #skills     .art-vid{object-position:81% 30%}  /* Aigis       - face at 73% */
+  #about      .art-vid{object-position:78% 30%}  /* Kotone      - face at 71% */
+  #contact    .art-vid{object-position:24% 26%}  /* Yukari      - face at 31% */
+
   .home-left{position:static;width:100%;padding:76px 22px 40px}
   .page{position:static;padding:66px 22px 90px}
   .hud.tr{display:none}
@@ -308,14 +326,14 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
   <span class="key"><b>ESC</b>BACK</span>
 </div>
 <button class="music" id="musicBtn" title="Toggle music">♪</button>
-<audio id="bgm" loop preload="none"><source src="art/theme.mp3" type="audio/mpeg"></audio>
+<audio id="bgm" loop preload="metadata"><source src="art/theme.mp3" type="audio/mpeg"></audio>
 
 <div id="wipe"><i class="wl w1"></i><i class="wl w2"></i><i class="wl w3"></i></div>
 
 <!-- ============ HOME ============ -->
 <section class="screen active" id="home">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/yuki.jpg" data-src="art/yuki.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/yuki.jpg" data-src="art/yuki.mp4"></video>
   </div>
   <div class="home-left">
     <span class="eyebrow stag">Take a look at my work</span>
@@ -339,7 +357,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 <!-- ============ PROJECTS ============ -->
 <section class="screen" id="projects">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/akihiko.jpg" data-src="art/akihiko.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/akihiko.jpg" data-src="art/akihiko.mp4"></video>
   </div>
   <div class="page">
     <button class="esc stag" data-back>◀ ESC · BACK</button>
@@ -395,7 +413,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 <!-- ============ EXPERIENCE ============ -->
 <section class="screen" id="experience">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/mitsuru.jpg" data-src="art/mitsuru.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/mitsuru.jpg" data-src="art/mitsuru.mp4"></video>
   </div>
   <div class="page">
     <button class="esc stag" data-back>◀ ESC · BACK</button>
@@ -450,7 +468,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 <!-- ============ SKILLS ============ -->
 <section class="screen" id="skills">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/aigis.jpg" data-src="art/aigis.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/aigis.jpg" data-src="art/aigis.mp4"></video>
   </div>
   <div class="page">
     <div class="skill-col">
@@ -502,7 +520,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 <!-- ============ ABOUT ============ -->
 <section class="screen" id="about">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/kotone.jpg" data-src="art/kotone.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/kotone.jpg" data-src="art/kotone.mp4"></video>
   </div>
   <div class="page">
     <button class="esc stag" data-back>◀ ESC · BACK</button>
@@ -552,7 +570,7 @@ body{font-family:'Archivo',sans-serif;background:var(--bg-deep);color:var(--pape
 <!-- ============ CONTACT ============ -->
 <section class="screen" id="contact">
   <div class="art">
-    <video class="art-vid" muted loop playsinline preload="none" poster="art/yukari.jpg" data-src="art/yukari.mp4"></video>
+    <video class="art-vid" autoplay muted loop playsinline preload="none" poster="art/yukari.jpg" data-src="art/yukari.mp4"></video>
   </div>
   <div class="page">
     <button class="esc stag" data-back>◀ ESC · BACK</button>
@@ -635,24 +653,21 @@ document.addEventListener('keydown',e=>{
 });
 
 
-/* ---- background video: desktop only, play just the active section ---- */
-const WIDE = window.matchMedia('(min-width: 901px)');
-function initVideos(){
-  if(!WIDE.matches) return;
-  document.querySelectorAll('.art-vid').forEach(v=>{
-    if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.load(); }
-  });
-  playActive();
-}
+/* ---- background video ----
+   Runs on mobile as well as desktop. To save data, a clip's src is only
+   assigned when its section is first opened, so nobody downloads all six. */
 function playActive(){
-  if(!WIDE.matches) return;
   document.querySelectorAll('.art-vid').forEach(v=>{
     const on = v.closest('.screen')?.classList.contains('active');
-    if(on){ v.play().catch(()=>{}); } else { v.pause(); }
+    if(on){
+      if(!v.src && v.dataset.src){ v.src = v.dataset.src; v.load(); }
+      v.play().catch(()=>{});
+    } else {
+      v.pause();
+    }
   });
 }
-WIDE.addEventListener('change',initVideos);
-initVideos();
+playActive();
 
 /* ---- background music ---- */
 const bgm=document.getElementById('bgm'), mbtn=document.getElementById('musicBtn');
@@ -668,9 +683,22 @@ mbtn.addEventListener('click',()=>{
   if(playing){ bgm.pause(); setMusic(false); }
   else{
     bgm.play().then(()=>setMusic(true))
-      .catch(()=>{ setMusic(false); mbtn.title='Playback blocked - click again'; });
+      .catch(()=>{ setMusic(false); mbtn.title='Playback blocked - tap again'; });
   }
 });
+
+/* Try to start the music immediately. Browsers block autoplay with sound until
+   the user has interacted with the page, so if that rejects we arm a one-shot
+   listener and start on the very first tap, key press or scroll instead. */
+(function autoStartMusic(){
+  const EVENTS=['pointerdown','touchstart','keydown','scroll','click'];
+  function start(){
+    bgm.play().then(()=>{ setMusic(true); disarm(); }).catch(()=>{});
+  }
+  function disarm(){ EVENTS.forEach(e=>window.removeEventListener(e,start)); }
+  function arm(){ EVENTS.forEach(e=>window.addEventListener(e,start,{passive:true})); }
+  bgm.play().then(()=>setMusic(true)).catch(()=>{ setMusic(false); arm(); });
+})();
 bgm.addEventListener('ended',()=>setMusic(false));
 setMusic(false);
 </script>
